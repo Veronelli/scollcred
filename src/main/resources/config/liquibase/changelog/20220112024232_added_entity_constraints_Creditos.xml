@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Creditos.
+    -->
+    <changeSet id="20220112024232-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="cliente_id"
+                                 baseTableName="creditos"
+                                 constraintName="fk_creditos__cliente_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cliente"/>
+
+        <addForeignKeyConstraint baseColumnNames="mutual_id"
+                                 baseTableName="creditos"
+                                 constraintName="fk_creditos__mutual_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="mutual"/>
+    </changeSet>
+</databaseChangeLog>

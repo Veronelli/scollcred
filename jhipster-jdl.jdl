@@ -1,0 +1,32 @@
+entity Cliente{
+	nombre String required minlength(4)
+	apellido String required minlength(4)
+	telefono String minlength(10)
+	dni String minlength(8) 
+}
+
+entity Creditos{
+	emisionCuotas Integer required
+    monto Integer required
+    pagoCuota Integer required
+    cantidadCuotas Integer required
+	tomado LocalDate required
+    inicioPago LocalDate required
+}
+
+entity Mutual{
+	nombre String required minlength(6)
+}
+
+entity Dependencia{
+	empleador String required minlength(4)
+}
+
+relationship OneToMany{
+    Dependencia to Cliente
+}
+
+relationship ManyToOne{
+	Creditos{ Cliente required } to Cliente 
+	Creditos{ Mutual required } to Mutual
+}

@@ -48,6 +48,12 @@ public class CacheConfiguration {
             createCache(cm, com.scollcred.app.domain.User.class.getName());
             createCache(cm, com.scollcred.app.domain.Authority.class.getName());
             createCache(cm, com.scollcred.app.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.scollcred.app.domain.Cliente.class.getName());
+            createCache(cm, com.scollcred.app.domain.Cliente.class.getName() + ".creditos");
+            createCache(cm, com.scollcred.app.domain.Creditos.class.getName());
+            createCache(cm, com.scollcred.app.domain.Mutual.class.getName());
+            createCache(cm, com.scollcred.app.domain.Dependencia.class.getName());
+            createCache(cm, com.scollcred.app.domain.Dependencia.class.getName() + ".clientes");
             // jhipster-needle-ehcache-add-entry
         };
     }

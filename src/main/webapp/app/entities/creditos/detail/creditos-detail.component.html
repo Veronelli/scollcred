@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="creditos">
+      <h2 data-cy="creditosDetailsHeading"><span>Creditos</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ creditos.id }}</span>
+        </dd>
+        <dt><span>Emision Cuotas</span></dt>
+        <dd>
+          <span>{{ creditos.emisionCuotas }}</span>
+        </dd>
+        <dt><span>Monto</span></dt>
+        <dd>
+          <span>{{ creditos.monto }}</span>
+        </dd>
+        <dt><span>Pago Cuota</span></dt>
+        <dd>
+          <span>{{ creditos.pagoCuota }}</span>
+        </dd>
+        <dt><span>Cantidad Cuotas</span></dt>
+        <dd>
+          <span>{{ creditos.cantidadCuotas }}</span>
+        </dd>
+        <dt><span>Tomado</span></dt>
+        <dd>
+          <span>{{ creditos.tomado | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Inicio Pago</span></dt>
+        <dd>
+          <span>{{ creditos.inicioPago | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Cliente</span></dt>
+        <dd>
+          <div *ngIf="creditos.cliente">
+            <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Mutual</span></dt>
+        <dd>
+          <div *ngIf="creditos.mutual">
+            <a [routerLink]="['/mutual', creditos.mutual?.id, 'view']">{{ creditos.mutual?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/creditos', creditos.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

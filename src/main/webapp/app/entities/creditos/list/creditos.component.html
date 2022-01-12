@@ -1,0 +1,100 @@
+<div>
+  <h2 id="page-heading" data-cy="CreditosHeading">
+    <span>Creditos</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-creditos"
+        [routerLink]="['/creditos/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Creditos </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="creditos?.length === 0">
+    <span>No creditos found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="creditos && creditos.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span>ID</span></th>
+          <th scope="col"><span>Emision Cuotas</span></th>
+          <th scope="col"><span>Monto</span></th>
+          <th scope="col"><span>Pago Cuota</span></th>
+          <th scope="col"><span>Cantidad Cuotas</span></th>
+          <th scope="col"><span>Tomado</span></th>
+          <th scope="col"><span>Inicio Pago</span></th>
+          <th scope="col"><span>Cliente</span></th>
+          <th scope="col"><span>Mutual</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let creditos of creditos; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/creditos', creditos.id, 'view']">{{ creditos.id }}</a>
+          </td>
+          <td>{{ creditos.emisionCuotas }}</td>
+          <td>{{ creditos.monto }}</td>
+          <td>{{ creditos.pagoCuota }}</td>
+          <td>{{ creditos.cantidadCuotas }}</td>
+          <td>{{ creditos.tomado | formatMediumDate }}</td>
+          <td>{{ creditos.inicioPago | formatMediumDate }}</td>
+          <td>
+            <div *ngIf="creditos.cliente">
+              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.nombre }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="creditos.mutual">
+              <a [routerLink]="['/mutual', creditos.mutual?.id, 'view']">{{ creditos.mutual?.nombre }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/creditos', creditos.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/creditos', creditos.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(creditos)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -42,6 +42,8 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "reactive": false,
-    "enableGradleEnterprise": false
+    "enableGradleEnterprise": false,
+    "entities": ["Cliente", "Creditos", "Mutual", "Dependencia"],
+    "lastLiquibaseTimestamp": 1641955354000
   }
 }

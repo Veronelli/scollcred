@@ -1,0 +1,29 @@
+{
+  "name": "Dependencia",
+  "fields": [
+    {
+      "fieldName": "empleador",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "4"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "cliente",
+      "otherEntityRelationshipName": "dependencia",
+      "relationshipName": "cliente"
+    }
+  ],
+  "entityTableName": "dependencia",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220112024234"
+}
