@@ -71,8 +71,7 @@ class CreditosGatlingTest extends Simulation {
             .post("/api/creditos")
             .headers(headers_http_authenticated)
             .body(StringBody("""{
-                "emisionCuotas":"0"
-                , "monto":"0"
+                "monto":"0"
                 , "pagoCuota":"0"
                 , "cantidadCuotas":"0"
                 , "tomado":"2020-01-01T00:00:00.000Z"

@@ -14,10 +14,6 @@
         <dd>
           <span>{{ creditos.id }}</span>
         </dd>
-        <dt><span>Emision Cuotas</span></dt>
-        <dd>
-          <span>{{ creditos.emisionCuotas }}</span>
-        </dd>
         <dt><span>Monto</span></dt>
         <dd>
           <span>{{ creditos.monto }}</span>
@@ -38,16 +34,16 @@
         <dd>
           <span>{{ creditos.inicioPago | formatMediumDate }}</span>
         </dd>
-        <dt><span>Cliente</span></dt>
-        <dd>
-          <div *ngIf="creditos.cliente">
-            <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.id }}</a>
-          </div>
-        </dd>
         <dt><span>Mutual</span></dt>
         <dd>
           <div *ngIf="creditos.mutual">
             <a [routerLink]="['/mutual', creditos.mutual?.id, 'view']">{{ creditos.mutual?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Cliente</span></dt>
+        <dd>
+          <div *ngIf="creditos.cliente">
+            <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.id }}</a>
           </div>
         </dd>
       </dl>

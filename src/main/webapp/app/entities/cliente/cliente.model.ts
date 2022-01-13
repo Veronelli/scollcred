@@ -1,3 +1,4 @@
+import { ICreditos } from 'app/entities/creditos/creditos.model';
 import { IDependencia } from 'app/entities/dependencia/dependencia.model';
 
 export interface ICliente {
@@ -6,6 +7,7 @@ export interface ICliente {
   apellido?: string;
   telefono?: string | null;
   dni?: string | null;
+  creditos?: ICreditos[];
   dependencia?: IDependencia | null;
 }
 
@@ -16,6 +18,7 @@ export class Cliente implements ICliente {
     public apellido?: string,
     public telefono?: string | null,
     public dni?: string | null,
+    public creditos?: ICreditos[],
     public dependencia?: IDependencia | null
   ) {}
 }

@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.scollcred.app.IntegrationTest;
-import com.scollcred.app.domain.Cliente;
 import com.scollcred.app.domain.Creditos;
 import com.scollcred.app.domain.Mutual;
 import com.scollcred.app.repository.CreditosRepository;
@@ -32,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 class CreditosResourceIT {
-
-    private static final Integer DEFAULT_EMISION_CUOTAS = 1;
-    private static final Integer UPDATED_EMISION_CUOTAS = 2;
 
     private static final Integer DEFAULT_MONTO = 1;
     private static final Integer UPDATED_MONTO = 2;
@@ -76,22 +72,11 @@ class CreditosResourceIT {
      */
     public static Creditos createEntity(EntityManager em) {
         Creditos creditos = new Creditos()
-            .emisionCuotas(DEFAULT_EMISION_CUOTAS)
             .monto(DEFAULT_MONTO)
             .pagoCuota(DEFAULT_PAGO_CUOTA)
             .cantidadCuotas(DEFAULT_CANTIDAD_CUOTAS)
             .tomado(DEFAULT_TOMADO)
             .inicioPago(DEFAULT_INICIO_PAGO);
-        // Add required entity
-        Cliente cliente;
-        if (TestUtil.findAll(em, Cliente.class).isEmpty()) {
-            cliente = ClienteResourceIT.createEntity(em);
-            em.persist(cliente);
-            em.flush();
-        } else {
-            cliente = TestUtil.findAll(em, Cliente.class).get(0);
-        }
-        creditos.setCliente(cliente);
         // Add required entity
         Mutual mutual;
         if (TestUtil.findAll(em, Mutual.class).isEmpty()) {
@@ -113,22 +98,11 @@ class CreditosResourceIT {
      */
     public static Creditos createUpdatedEntity(EntityManager em) {
         Creditos creditos = new Creditos()
-            .emisionCuotas(UPDATED_EMISION_CUOTAS)
             .monto(UPDATED_MONTO)
             .pagoCuota(UPDATED_PAGO_CUOTA)
             .cantidadCuotas(UPDATED_CANTIDAD_CUOTAS)
             .tomado(UPDATED_TOMADO)
             .inicioPago(UPDATED_INICIO_PAGO);
-        // Add required entity
-        Cliente cliente;
-        if (TestUtil.findAll(em, Cliente.class).isEmpty()) {
-            cliente = ClienteResourceIT.createUpdatedEntity(em);
-            em.persist(cliente);
-            em.flush();
-        } else {
-            cliente = TestUtil.findAll(em, Cliente.class).get(0);
-        }
-        creditos.setCliente(cliente);
         // Add required entity
         Mutual mutual;
         if (TestUtil.findAll(em, Mutual.class).isEmpty()) {
@@ -160,7 +134,6 @@ class CreditosResourceIT {
         List<Creditos> creditosList = creditosRepository.findAll();
         assertThat(creditosList).hasSize(databaseSizeBeforeCreate + 1);
         Creditos testCreditos = creditosList.get(creditosList.size() - 1);
-        assertThat(testCreditos.getEmisionCuotas()).isEqualTo(DEFAULT_EMISION_CUOTAS);
         assertThat(testCreditos.getMonto()).isEqualTo(DEFAULT_MONTO);
         assertThat(testCreditos.getPagoCuota()).isEqualTo(DEFAULT_PAGO_CUOTA);
         assertThat(testCreditos.getCantidadCuotas()).isEqualTo(DEFAULT_CANTIDAD_CUOTAS);
@@ -184,23 +157,6 @@ class CreditosResourceIT {
         // Validate the Creditos in the database
         List<Creditos> creditosList = creditosRepository.findAll();
         assertThat(creditosList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkEmisionCuotasIsRequired() throws Exception {
-        int databaseSizeBeforeTest = creditosRepository.findAll().size();
-        // set the field null
-        creditos.setEmisionCuotas(null);
-
-        // Create the Creditos, which fails.
-
-        restCreditosMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(creditos)))
-            .andExpect(status().isBadRequest());
-
-        List<Creditos> creditosList = creditosRepository.findAll();
-        assertThat(creditosList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -300,7 +256,6 @@ class CreditosResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(creditos.getId().intValue())))
-            .andExpect(jsonPath("$.[*].emisionCuotas").value(hasItem(DEFAULT_EMISION_CUOTAS)))
             .andExpect(jsonPath("$.[*].monto").value(hasItem(DEFAULT_MONTO)))
             .andExpect(jsonPath("$.[*].pagoCuota").value(hasItem(DEFAULT_PAGO_CUOTA)))
             .andExpect(jsonPath("$.[*].cantidadCuotas").value(hasItem(DEFAULT_CANTIDAD_CUOTAS)))
@@ -320,7 +275,6 @@ class CreditosResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(creditos.getId().intValue()))
-            .andExpect(jsonPath("$.emisionCuotas").value(DEFAULT_EMISION_CUOTAS))
             .andExpect(jsonPath("$.monto").value(DEFAULT_MONTO))
             .andExpect(jsonPath("$.pagoCuota").value(DEFAULT_PAGO_CUOTA))
             .andExpect(jsonPath("$.cantidadCuotas").value(DEFAULT_CANTIDAD_CUOTAS))
@@ -348,7 +302,6 @@ class CreditosResourceIT {
         // Disconnect from session so that the updates on updatedCreditos are not directly saved in db
         em.detach(updatedCreditos);
         updatedCreditos
-            .emisionCuotas(UPDATED_EMISION_CUOTAS)
             .monto(UPDATED_MONTO)
             .pagoCuota(UPDATED_PAGO_CUOTA)
             .cantidadCuotas(UPDATED_CANTIDAD_CUOTAS)
@@ -367,7 +320,6 @@ class CreditosResourceIT {
         List<Creditos> creditosList = creditosRepository.findAll();
         assertThat(creditosList).hasSize(databaseSizeBeforeUpdate);
         Creditos testCreditos = creditosList.get(creditosList.size() - 1);
-        assertThat(testCreditos.getEmisionCuotas()).isEqualTo(UPDATED_EMISION_CUOTAS);
         assertThat(testCreditos.getMonto()).isEqualTo(UPDATED_MONTO);
         assertThat(testCreditos.getPagoCuota()).isEqualTo(UPDATED_PAGO_CUOTA);
         assertThat(testCreditos.getCantidadCuotas()).isEqualTo(UPDATED_CANTIDAD_CUOTAS);
@@ -443,11 +395,7 @@ class CreditosResourceIT {
         Creditos partialUpdatedCreditos = new Creditos();
         partialUpdatedCreditos.setId(creditos.getId());
 
-        partialUpdatedCreditos
-            .emisionCuotas(UPDATED_EMISION_CUOTAS)
-            .monto(UPDATED_MONTO)
-            .cantidadCuotas(UPDATED_CANTIDAD_CUOTAS)
-            .inicioPago(UPDATED_INICIO_PAGO);
+        partialUpdatedCreditos.monto(UPDATED_MONTO).pagoCuota(UPDATED_PAGO_CUOTA).tomado(UPDATED_TOMADO);
 
         restCreditosMockMvc
             .perform(
@@ -461,12 +409,11 @@ class CreditosResourceIT {
         List<Creditos> creditosList = creditosRepository.findAll();
         assertThat(creditosList).hasSize(databaseSizeBeforeUpdate);
         Creditos testCreditos = creditosList.get(creditosList.size() - 1);
-        assertThat(testCreditos.getEmisionCuotas()).isEqualTo(UPDATED_EMISION_CUOTAS);
         assertThat(testCreditos.getMonto()).isEqualTo(UPDATED_MONTO);
-        assertThat(testCreditos.getPagoCuota()).isEqualTo(DEFAULT_PAGO_CUOTA);
-        assertThat(testCreditos.getCantidadCuotas()).isEqualTo(UPDATED_CANTIDAD_CUOTAS);
-        assertThat(testCreditos.getTomado()).isEqualTo(DEFAULT_TOMADO);
-        assertThat(testCreditos.getInicioPago()).isEqualTo(UPDATED_INICIO_PAGO);
+        assertThat(testCreditos.getPagoCuota()).isEqualTo(UPDATED_PAGO_CUOTA);
+        assertThat(testCreditos.getCantidadCuotas()).isEqualTo(DEFAULT_CANTIDAD_CUOTAS);
+        assertThat(testCreditos.getTomado()).isEqualTo(UPDATED_TOMADO);
+        assertThat(testCreditos.getInicioPago()).isEqualTo(DEFAULT_INICIO_PAGO);
     }
 
     @Test
@@ -482,7 +429,6 @@ class CreditosResourceIT {
         partialUpdatedCreditos.setId(creditos.getId());
 
         partialUpdatedCreditos
-            .emisionCuotas(UPDATED_EMISION_CUOTAS)
             .monto(UPDATED_MONTO)
             .pagoCuota(UPDATED_PAGO_CUOTA)
             .cantidadCuotas(UPDATED_CANTIDAD_CUOTAS)
@@ -501,7 +447,6 @@ class CreditosResourceIT {
         List<Creditos> creditosList = creditosRepository.findAll();
         assertThat(creditosList).hasSize(databaseSizeBeforeUpdate);
         Creditos testCreditos = creditosList.get(creditosList.size() - 1);
-        assertThat(testCreditos.getEmisionCuotas()).isEqualTo(UPDATED_EMISION_CUOTAS);
         assertThat(testCreditos.getMonto()).isEqualTo(UPDATED_MONTO);
         assertThat(testCreditos.getPagoCuota()).isEqualTo(UPDATED_PAGO_CUOTA);
         assertThat(testCreditos.getCantidadCuotas()).isEqualTo(UPDATED_CANTIDAD_CUOTAS);

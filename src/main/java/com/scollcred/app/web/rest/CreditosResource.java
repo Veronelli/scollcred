@@ -2,7 +2,12 @@ package com.scollcred.app.web.rest;
 
 import com.scollcred.app.domain.Creditos;
 import com.scollcred.app.repository.CreditosRepository;
+import com.scollcred.app.service.CreditosService;
+import com.scollcred.app.service.dto.FilterDTO;
+import com.scollcred.app.service.impl.CreditosServiceImpl;
 import com.scollcred.app.web.rest.errors.BadRequestAlertException;
+
+import java.awt.print.Pageable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -12,6 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +40,8 @@ public class CreditosResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Autowired
+    private CreditosServiceImpl creditosService;
     private final CreditosRepository creditosRepository;
 
     public CreditosResource(CreditosRepository creditosRepository) {
@@ -125,9 +133,6 @@ public class CreditosResource {
         Optional<Creditos> result = creditosRepository
             .findById(creditos.getId())
             .map(existingCreditos -> {
-                if (creditos.getEmisionCuotas() != null) {
-                    existingCreditos.setEmisionCuotas(creditos.getEmisionCuotas());
-                }
                 if (creditos.getMonto() != null) {
                     existingCreditos.setMonto(creditos.getMonto());
                 }
@@ -160,9 +165,9 @@ public class CreditosResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of creditos in body.
      */
     @GetMapping("/creditos")
-    public List<Creditos> getAllCreditos() {
+    public List<Creditos> getAllCreditos(@ModelAttribute("filter") FilterDTO filter) {
         log.debug("REST request to get all Creditos");
-        return creditosRepository.findAll();
+        return creditosService.allCreditos(filter);
     }
 
     /**

@@ -32,7 +32,7 @@ public class Dependencia implements Serializable {
 
     @OneToMany(mappedBy = "dependencia")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "dependencia" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "creditos", "dependencia" }, allowSetters = true)
     private Set<Cliente> clientes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

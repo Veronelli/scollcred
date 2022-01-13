@@ -12,28 +12,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_emisionCuotas">Emision Cuotas</label>
-          <input
-            type="number"
-            class="form-control"
-            name="emisionCuotas"
-            id="field_emisionCuotas"
-            data-cy="emisionCuotas"
-            formControlName="emisionCuotas"
-          />
-          <div
-            *ngIf="
-              editForm.get('emisionCuotas')!.invalid && (editForm.get('emisionCuotas')!.dirty || editForm.get('emisionCuotas')!.touched)
-            "
-          >
-            <small class="form-text text-danger" *ngIf="editForm.get('emisionCuotas')?.errors?.required"> This field is required. </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('emisionCuotas')?.errors?.number">
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" for="field_monto">Monto</label>
           <input type="number" class="form-control" name="monto" id="field_monto" data-cy="monto" formControlName="monto" />
           <div *ngIf="editForm.get('monto')!.invalid && (editForm.get('monto')!.dirty || editForm.get('monto')!.touched)">
@@ -122,22 +100,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_cliente">Cliente</label>
-          <select class="form-control" id="field_cliente" data-cy="cliente" name="cliente" formControlName="cliente">
-            <option *ngIf="!editForm.get('cliente')!.value" [ngValue]="null" selected></option>
-            <option
-              [ngValue]="clienteOption.id === editForm.get('cliente')!.value?.id ? editForm.get('cliente')!.value : clienteOption"
-              *ngFor="let clienteOption of clientesSharedCollection; trackBy: trackClienteById"
-            >
-              {{ clienteOption.id }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['cliente'])!.invalid && (editForm.get(['cliente'])!.dirty || editForm.get(['cliente'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['cliente'])?.errors?.required"> This field is required. </small>
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" for="field_mutual">Mutual</label>
           <select class="form-control" id="field_mutual" data-cy="mutual" name="mutual" formControlName="mutual">
             <option *ngIf="!editForm.get('mutual')!.value" [ngValue]="null" selected></option>
@@ -151,6 +113,19 @@
         </div>
         <div *ngIf="editForm.get(['mutual'])!.invalid && (editForm.get(['mutual'])!.dirty || editForm.get(['mutual'])!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get(['mutual'])?.errors?.required"> This field is required. </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_cliente">Cliente</label>
+          <select class="form-control" id="field_cliente" data-cy="cliente" name="cliente" formControlName="cliente">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="clienteOption.id === editForm.get('cliente')!.value?.id ? editForm.get('cliente')!.value : clienteOption"
+              *ngFor="let clienteOption of clientesSharedCollection; trackBy: trackClienteById"
+            >
+              {{ clienteOption.id }}
+            </option>
+          </select>
         </div>
       </div>
 

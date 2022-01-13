@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.scollcred.app.IntegrationTest;
 import com.scollcred.app.domain.Cliente;
+import com.scollcred.app.domain.Creditos;
 import com.scollcred.app.repository.ClienteRepository;
 import java.util.List;
 import java.util.Random;
@@ -66,6 +67,16 @@ class ClienteResourceIT {
      */
     public static Cliente createEntity(EntityManager em) {
         Cliente cliente = new Cliente().nombre(DEFAULT_NOMBRE).apellido(DEFAULT_APELLIDO).telefono(DEFAULT_TELEFONO).dni(DEFAULT_DNI);
+        // Add required entity
+        Creditos creditos;
+        if (TestUtil.findAll(em, Creditos.class).isEmpty()) {
+            creditos = CreditosResourceIT.createEntity(em);
+            em.persist(creditos);
+            em.flush();
+        } else {
+            creditos = TestUtil.findAll(em, Creditos.class).get(0);
+        }
+        cliente.getCreditos().add(creditos);
         return cliente;
     }
 
@@ -77,6 +88,16 @@ class ClienteResourceIT {
      */
     public static Cliente createUpdatedEntity(EntityManager em) {
         Cliente cliente = new Cliente().nombre(UPDATED_NOMBRE).apellido(UPDATED_APELLIDO).telefono(UPDATED_TELEFONO).dni(UPDATED_DNI);
+        // Add required entity
+        Creditos creditos;
+        if (TestUtil.findAll(em, Creditos.class).isEmpty()) {
+            creditos = CreditosResourceIT.createUpdatedEntity(em);
+            em.persist(creditos);
+            em.flush();
+        } else {
+            creditos = TestUtil.findAll(em, Creditos.class).get(0);
+        }
+        cliente.getCreditos().add(creditos);
         return cliente;
     }
 

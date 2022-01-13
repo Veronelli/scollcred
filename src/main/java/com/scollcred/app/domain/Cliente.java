@@ -2,6 +2,8 @@ package com.scollcred.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -40,6 +42,11 @@ public class Cliente implements Serializable {
     @Size(min = 8)
     @Column(name = "dni")
     private String dni;
+
+    @OneToMany(mappedBy = "cliente")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "mutual", "cliente" }, allowSetters = true)
+    private Set<Creditos> creditos = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "clientes" }, allowSetters = true)
@@ -110,6 +117,37 @@ public class Cliente implements Serializable {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public Set<Creditos> getCreditos() {
+        return this.creditos;
+    }
+
+    public void setCreditos(Set<Creditos> creditos) {
+        if (this.creditos != null) {
+            this.creditos.forEach(i -> i.setCliente(null));
+        }
+        if (creditos != null) {
+            creditos.forEach(i -> i.setCliente(this));
+        }
+        this.creditos = creditos;
+    }
+
+    public Cliente creditos(Set<Creditos> creditos) {
+        this.setCreditos(creditos);
+        return this;
+    }
+
+    public Cliente addCreditos(Creditos creditos) {
+        this.creditos.add(creditos);
+        creditos.setCliente(this);
+        return this;
+    }
+
+    public Cliente removeCreditos(Creditos creditos) {
+        this.creditos.remove(creditos);
+        creditos.setCliente(null);
+        return this;
     }
 
     public Dependencia getDependencia() {

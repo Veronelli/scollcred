@@ -14,9 +14,6 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="emision_cuotas" type="integer">
-                <constraints nullable="false" />
-            </column>
             <column name="monto" type="integer">
                 <constraints nullable="false" />
             </column>
@@ -32,11 +29,11 @@
             <column name="inicio_pago" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="cliente_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <column name="mutual_id" type="bigint">
                 <constraints nullable="false" />
+            </column>
+            <column name="cliente_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -59,13 +56,11 @@
                   tableName="creditos"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="emision_cuotas" type="numeric"/>
             <column name="monto" type="numeric"/>
             <column name="pago_cuota" type="numeric"/>
             <column name="cantidad_cuotas" type="numeric"/>
             <column name="tomado" type="date"/>
             <column name="inicio_pago" type="date"/>
-            <column name="cliente_id" type="numeric"/>
             <column name="mutual_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

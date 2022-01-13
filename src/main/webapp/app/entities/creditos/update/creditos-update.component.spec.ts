@@ -9,10 +9,10 @@ import { of, Subject } from 'rxjs';
 
 import { CreditosService } from '../service/creditos.service';
 import { ICreditos, Creditos } from '../creditos.model';
-import { ICliente } from 'app/entities/cliente/cliente.model';
-import { ClienteService } from 'app/entities/cliente/service/cliente.service';
 import { IMutual } from 'app/entities/mutual/mutual.model';
 import { MutualService } from 'app/entities/mutual/service/mutual.service';
+import { ICliente } from 'app/entities/cliente/cliente.model';
+import { ClienteService } from 'app/entities/cliente/service/cliente.service';
 
 import { CreditosUpdateComponent } from './creditos-update.component';
 
@@ -21,8 +21,8 @@ describe('Creditos Management Update Component', () => {
   let fixture: ComponentFixture<CreditosUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let creditosService: CreditosService;
-  let clienteService: ClienteService;
   let mutualService: MutualService;
+  let clienteService: ClienteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -36,32 +36,13 @@ describe('Creditos Management Update Component', () => {
     fixture = TestBed.createComponent(CreditosUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     creditosService = TestBed.inject(CreditosService);
-    clienteService = TestBed.inject(ClienteService);
     mutualService = TestBed.inject(MutualService);
+    clienteService = TestBed.inject(ClienteService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call Cliente query and add missing value', () => {
-      const creditos: ICreditos = { id: 456 };
-      const cliente: ICliente = { id: 92442 };
-      creditos.cliente = cliente;
-
-      const clienteCollection: ICliente[] = [{ id: 43022 }];
-      jest.spyOn(clienteService, 'query').mockReturnValue(of(new HttpResponse({ body: clienteCollection })));
-      const additionalClientes = [cliente];
-      const expectedCollection: ICliente[] = [...additionalClientes, ...clienteCollection];
-      jest.spyOn(clienteService, 'addClienteToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ creditos });
-      comp.ngOnInit();
-
-      expect(clienteService.query).toHaveBeenCalled();
-      expect(clienteService.addClienteToCollectionIfMissing).toHaveBeenCalledWith(clienteCollection, ...additionalClientes);
-      expect(comp.clientesSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should call Mutual query and add missing value', () => {
       const creditos: ICreditos = { id: 456 };
       const mutual: IMutual = { id: 44294 };
@@ -81,19 +62,38 @@ describe('Creditos Management Update Component', () => {
       expect(comp.mutualsSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Cliente query and add missing value', () => {
+      const creditos: ICreditos = { id: 456 };
+      const cliente: ICliente = { id: 92442 };
+      creditos.cliente = cliente;
+
+      const clienteCollection: ICliente[] = [{ id: 43022 }];
+      jest.spyOn(clienteService, 'query').mockReturnValue(of(new HttpResponse({ body: clienteCollection })));
+      const additionalClientes = [cliente];
+      const expectedCollection: ICliente[] = [...additionalClientes, ...clienteCollection];
+      jest.spyOn(clienteService, 'addClienteToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ creditos });
+      comp.ngOnInit();
+
+      expect(clienteService.query).toHaveBeenCalled();
+      expect(clienteService.addClienteToCollectionIfMissing).toHaveBeenCalledWith(clienteCollection, ...additionalClientes);
+      expect(comp.clientesSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const creditos: ICreditos = { id: 456 };
-      const cliente: ICliente = { id: 76147 };
-      creditos.cliente = cliente;
       const mutual: IMutual = { id: 33064 };
       creditos.mutual = mutual;
+      const cliente: ICliente = { id: 76147 };
+      creditos.cliente = cliente;
 
       activatedRoute.data = of({ creditos });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(creditos));
-      expect(comp.clientesSharedCollection).toContain(cliente);
       expect(comp.mutualsSharedCollection).toContain(mutual);
+      expect(comp.clientesSharedCollection).toContain(cliente);
     });
   });
 
@@ -162,18 +162,18 @@ describe('Creditos Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
-    describe('trackClienteById', () => {
-      it('Should return tracked Cliente primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackClienteById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
     describe('trackMutualById', () => {
       it('Should return tracked Mutual primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackMutualById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackClienteById', () => {
+      it('Should return tracked Cliente primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackClienteById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

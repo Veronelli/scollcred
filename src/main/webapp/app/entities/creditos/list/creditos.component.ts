@@ -9,6 +9,7 @@ import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.
 @Component({
   selector: 'jhi-creditos',
   templateUrl: './creditos.component.html',
+  styleUrls: ['./creditos.component.css'],
 })
 export class CreditosComponent implements OnInit {
   creditos?: ICreditos[];

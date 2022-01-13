@@ -8,16 +8,16 @@
     -->
     <changeSet id="20220112024232-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="cliente_id"
-                                 baseTableName="creditos"
-                                 constraintName="fk_creditos__cliente_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cliente"/>
-
         <addForeignKeyConstraint baseColumnNames="mutual_id"
                                  baseTableName="creditos"
                                  constraintName="fk_creditos__mutual_id"
                                  referencedColumnNames="id"
                                  referencedTableName="mutual"/>
+
+        <addForeignKeyConstraint baseColumnNames="cliente_id"
+                                 baseTableName="creditos"
+                                 constraintName="fk_creditos__cliente_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cliente"/>
     </changeSet>
 </databaseChangeLog>

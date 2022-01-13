@@ -7,10 +7,10 @@ import { finalize, map } from 'rxjs/operators';
 
 import { ICreditos, Creditos } from '../creditos.model';
 import { CreditosService } from '../service/creditos.service';
-import { ICliente } from 'app/entities/cliente/cliente.model';
-import { ClienteService } from 'app/entities/cliente/service/cliente.service';
 import { IMutual } from 'app/entities/mutual/mutual.model';
 import { MutualService } from 'app/entities/mutual/service/mutual.service';
+import { ICliente } from 'app/entities/cliente/cliente.model';
+import { ClienteService } from 'app/entities/cliente/service/cliente.service';
 
 @Component({
   selector: 'jhi-creditos-update',
@@ -19,25 +19,24 @@ import { MutualService } from 'app/entities/mutual/service/mutual.service';
 export class CreditosUpdateComponent implements OnInit {
   isSaving = false;
 
-  clientesSharedCollection: ICliente[] = [];
   mutualsSharedCollection: IMutual[] = [];
+  clientesSharedCollection: ICliente[] = [];
 
   editForm = this.fb.group({
     id: [],
-    emisionCuotas: [null, [Validators.required]],
     monto: [null, [Validators.required]],
     pagoCuota: [null, [Validators.required]],
     cantidadCuotas: [null, [Validators.required]],
     tomado: [null, [Validators.required]],
     inicioPago: [null, [Validators.required]],
-    cliente: [null, Validators.required],
     mutual: [null, Validators.required],
+    cliente: [],
   });
 
   constructor(
     protected creditosService: CreditosService,
-    protected clienteService: ClienteService,
     protected mutualService: MutualService,
+    protected clienteService: ClienteService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -64,11 +63,11 @@ export class CreditosUpdateComponent implements OnInit {
     }
   }
 
-  trackClienteById(index: number, item: ICliente): number {
+  trackMutualById(index: number, item: IMutual): number {
     return item.id!;
   }
 
-  trackMutualById(index: number, item: IMutual): number {
+  trackClienteById(index: number, item: ICliente): number {
     return item.id!;
   }
 
@@ -94,21 +93,26 @@ export class CreditosUpdateComponent implements OnInit {
   protected updateForm(creditos: ICreditos): void {
     this.editForm.patchValue({
       id: creditos.id,
-      emisionCuotas: creditos.emisionCuotas,
       monto: creditos.monto,
       pagoCuota: creditos.pagoCuota,
       cantidadCuotas: creditos.cantidadCuotas,
       tomado: creditos.tomado,
       inicioPago: creditos.inicioPago,
-      cliente: creditos.cliente,
       mutual: creditos.mutual,
+      cliente: creditos.cliente,
     });
 
-    this.clientesSharedCollection = this.clienteService.addClienteToCollectionIfMissing(this.clientesSharedCollection, creditos.cliente);
     this.mutualsSharedCollection = this.mutualService.addMutualToCollectionIfMissing(this.mutualsSharedCollection, creditos.mutual);
+    this.clientesSharedCollection = this.clienteService.addClienteToCollectionIfMissing(this.clientesSharedCollection, creditos.cliente);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.mutualService
+      .query()
+      .pipe(map((res: HttpResponse<IMutual[]>) => res.body ?? []))
+      .pipe(map((mutuals: IMutual[]) => this.mutualService.addMutualToCollectionIfMissing(mutuals, this.editForm.get('mutual')!.value)))
+      .subscribe((mutuals: IMutual[]) => (this.mutualsSharedCollection = mutuals));
+
     this.clienteService
       .query()
       .pipe(map((res: HttpResponse<ICliente[]>) => res.body ?? []))
@@ -116,26 +120,19 @@ export class CreditosUpdateComponent implements OnInit {
         map((clientes: ICliente[]) => this.clienteService.addClienteToCollectionIfMissing(clientes, this.editForm.get('cliente')!.value))
       )
       .subscribe((clientes: ICliente[]) => (this.clientesSharedCollection = clientes));
-
-    this.mutualService
-      .query()
-      .pipe(map((res: HttpResponse<IMutual[]>) => res.body ?? []))
-      .pipe(map((mutuals: IMutual[]) => this.mutualService.addMutualToCollectionIfMissing(mutuals, this.editForm.get('mutual')!.value)))
-      .subscribe((mutuals: IMutual[]) => (this.mutualsSharedCollection = mutuals));
   }
 
   protected createFromForm(): ICreditos {
     return {
       ...new Creditos(),
       id: this.editForm.get(['id'])!.value,
-      emisionCuotas: this.editForm.get(['emisionCuotas'])!.value,
       monto: this.editForm.get(['monto'])!.value,
       pagoCuota: this.editForm.get(['pagoCuota'])!.value,
       cantidadCuotas: this.editForm.get(['cantidadCuotas'])!.value,
       tomado: this.editForm.get(['tomado'])!.value,
       inicioPago: this.editForm.get(['inicioPago'])!.value,
-      cliente: this.editForm.get(['cliente'])!.value,
       mutual: this.editForm.get(['mutual'])!.value,
+      cliente: this.editForm.get(['cliente'])!.value,
     };
   }
 }

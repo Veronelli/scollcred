@@ -2,11 +2,6 @@
   "name": "Creditos",
   "fields": [
     {
-      "fieldName": "emisionCuotas",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "monto",
       "fieldType": "Integer",
       "fieldValidateRules": ["required"]
@@ -35,17 +30,16 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "cliente",
-      "otherEntityRelationshipName": "creditos",
-      "relationshipValidateRules": "required",
-      "relationshipName": "cliente"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "mutual",
       "otherEntityRelationshipName": "creditos",
       "relationshipValidateRules": "required",
       "relationshipName": "mutual"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "cliente",
+      "otherEntityRelationshipName": "creditos",
+      "relationshipName": "cliente"
     }
   ],
   "entityTableName": "creditos",

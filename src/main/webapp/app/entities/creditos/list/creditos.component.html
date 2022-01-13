@@ -33,38 +33,37 @@
       <thead>
         <tr>
           <th scope="col"><span>ID</span></th>
-          <th scope="col"><span>Emision Cuotas</span></th>
+          <th scope="col"><jhi-head-table columnName="Mutual"></jhi-head-table></th>
+          <th scope="col"><jhi-head-table columnName="Cliente"></jhi-head-table></th>
           <th scope="col"><span>Monto</span></th>
           <th scope="col"><span>Pago Cuota</span></th>
           <th scope="col"><span>Cantidad Cuotas</span></th>
           <th scope="col"><span>Tomado</span></th>
           <th scope="col"><span>Inicio Pago</span></th>
-          <th scope="col"><span>Cliente</span></th>
-          <th scope="col"><span>Mutual</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let creditos of creditos; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/creditos', creditos.id, 'view']">{{ creditos.id }}</a>
-          </td>
-          <td>{{ creditos.emisionCuotas }}</td>
-          <td>{{ creditos.monto }}</td>
-          <td>{{ creditos.pagoCuota }}</td>
-          <td>{{ creditos.cantidadCuotas }}</td>
-          <td>{{ creditos.tomado | formatMediumDate }}</td>
-          <td>{{ creditos.inicioPago | formatMediumDate }}</td>
-          <td>
-            <div *ngIf="creditos.cliente">
-              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.nombre }}</a>
-            </div>
+            <a [routerLink]="['/creditos', creditos.id, 'view']">{{ creditos.id }} </a>
           </td>
           <td>
             <div *ngIf="creditos.mutual">
               <a [routerLink]="['/mutual', creditos.mutual?.id, 'view']">{{ creditos.mutual?.nombre }}</a>
             </div>
           </td>
+          <td>
+            <div *ngIf="creditos.cliente">
+              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.nombre }}</a>
+            </div>
+          </td>
+          <td>{{ creditos.monto }}</td>
+          <td>{{ creditos.pagoCuota }}</td>
+          <td>{{ creditos.cantidadCuotas }}</td>
+          <td>{{ creditos.tomado | formatMediumDate }}</td>
+          <td>{{ creditos.inicioPago | formatMediumDate }}</td>
+
           <td class="text-right">
             <div class="btn-group">
               <button

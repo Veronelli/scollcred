@@ -28,6 +28,13 @@
   ],
   "relationships": [
     {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "creditos",
+      "otherEntityRelationshipName": "cliente",
+      "relationshipValidateRules": "required",
+      "relationshipName": "creditos"
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "dependencia",
       "otherEntityRelationshipName": "cliente",

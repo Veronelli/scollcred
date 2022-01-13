@@ -25,7 +25,6 @@ describe('Creditos Service', () => {
 
     elemDefault = {
       id: 0,
-      emisionCuotas: 0,
       monto: 0,
       pagoCuota: 0,
       cantidadCuotas: 0,
@@ -80,7 +79,6 @@ describe('Creditos Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          emisionCuotas: 1,
           monto: 1,
           pagoCuota: 1,
           cantidadCuotas: 1,
@@ -108,9 +106,8 @@ describe('Creditos Service', () => {
     it('should partial update a Creditos', () => {
       const patchObject = Object.assign(
         {
-          emisionCuotas: 1,
           monto: 1,
-          tomado: currentDate.format(DATE_FORMAT),
+          pagoCuota: 1,
           inicioPago: currentDate.format(DATE_FORMAT),
         },
         new Creditos()
@@ -137,7 +134,6 @@ describe('Creditos Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          emisionCuotas: 1,
           monto: 1,
           pagoCuota: 1,
           cantidadCuotas: 1,
@@ -200,7 +196,7 @@ describe('Creditos Service', () => {
       });
 
       it('should add only unique Creditos to an array', () => {
-        const creditosArray: ICreditos[] = [{ id: 123 }, { id: 456 }, { id: 17377 }];
+        const creditosArray: ICreditos[] = [{ id: 123 }, { id: 456 }, { id: 50899 }];
         const creditosCollection: ICreditos[] = [{ id: 123 }];
         expectedResult = service.addCreditosToCollectionIfMissing(creditosCollection, ...creditosArray);
         expect(expectedResult).toHaveLength(3);

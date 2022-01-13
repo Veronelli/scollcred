@@ -25,10 +25,6 @@ public class Creditos implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "emision_cuotas", nullable = false)
-    private Integer emisionCuotas;
-
-    @NotNull
     @Column(name = "monto", nullable = false)
     private Integer monto;
 
@@ -50,12 +46,11 @@ public class Creditos implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "dependencia" }, allowSetters = true)
-    private Cliente cliente;
-
-    @ManyToOne(optional = false)
-    @NotNull
     private Mutual mutual;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "creditos", "dependencia" }, allowSetters = true)
+    private Cliente cliente;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -70,19 +65,6 @@ public class Creditos implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getEmisionCuotas() {
-        return this.emisionCuotas;
-    }
-
-    public Creditos emisionCuotas(Integer emisionCuotas) {
-        this.setEmisionCuotas(emisionCuotas);
-        return this;
-    }
-
-    public void setEmisionCuotas(Integer emisionCuotas) {
-        this.emisionCuotas = emisionCuotas;
     }
 
     public Integer getMonto() {
@@ -150,19 +132,6 @@ public class Creditos implements Serializable {
         this.inicioPago = inicioPago;
     }
 
-    public Cliente getCliente() {
-        return this.cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Creditos cliente(Cliente cliente) {
-        this.setCliente(cliente);
-        return this;
-    }
-
     public Mutual getMutual() {
         return this.mutual;
     }
@@ -173,6 +142,19 @@ public class Creditos implements Serializable {
 
     public Creditos mutual(Mutual mutual) {
         this.setMutual(mutual);
+        return this;
+    }
+
+    public Cliente getCliente() {
+        return this.cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Creditos cliente(Cliente cliente) {
+        this.setCliente(cliente);
         return this;
     }
 
@@ -200,7 +182,6 @@ public class Creditos implements Serializable {
     public String toString() {
         return "Creditos{" +
             "id=" + getId() +
-            ", emisionCuotas=" + getEmisionCuotas() +
             ", monto=" + getMonto() +
             ", pagoCuota=" + getPagoCuota() +
             ", cantidadCuotas=" + getCantidadCuotas() +

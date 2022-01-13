@@ -6,7 +6,6 @@ entity Cliente{
 }
 
 entity Creditos{
-	emisionCuotas Integer required
     monto Integer required
     pagoCuota Integer required
     cantidadCuotas Integer required
@@ -23,10 +22,10 @@ entity Dependencia{
 }
 
 relationship OneToMany{
+	Cliente{ Creditos required } to Creditos
     Dependencia to Cliente
 }
 
 relationship ManyToOne{
-	Creditos{ Cliente required } to Cliente 
 	Creditos{ Mutual required } to Mutual
 }
