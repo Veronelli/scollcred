@@ -16,6 +16,13 @@ import java.util.List;
 @EnableJpaRepositories
 @Repository
 public interface CreditosRepository extends JpaRepository<Creditos, Long> {
-    @Query(value="SELECT cred.* FROM CREDITOS AS cred LEFT JOIN CLIENTE AS clie  ON clie.ID = cred.ID WHERE clie.NOMBRE = :name", nativeQuery = true)
-    public List<Creditos> findByClienteName(@Param("name") int nombre);
+    @Query(value="SELECT cred.* FROM CREDITOS AS cred LEFT JOIN CLIENTE AS clie  ON clie.ID = cred.ID LEFT JOIN MUTUAL AS mut ON clie.ID = mut.id WHERE clie.NOMBRE LIKE :cliente% AND mut.NOMBRE LIKE :mutual%", nativeQuery = true)
+    public List<Creditos> findByClienteAndMutual(@Param("cliente") String cliente,@Param("mutual") String mutual);
+
+    @Query(value="SELECT cred.* FROM CREDITOS AS cred LEFT JOIN CLIENTE AS clie ON clie.ID = cred.ID WHERE clie.NOMBRE LIKE :cliente%", nativeQuery = true)
+    public List<Creditos> findByClienteName(@Param("cliente")String cliente);
+
+    @Query(value="SELECT cred.* FROM CREDITOS AS cred LEFT JOIN MUTUAL AS mut ON mut.ID = cred.ID WHERE mut.NOMBRE LIKE :mutual%", nativeQuery = true)
+    public List<Creditos> findByMutualName(@Param("mutual")String mutual);
+
 }

@@ -30,6 +30,15 @@ public class CreditosServiceImpl implements CreditosService {
     private CreditosRepository creditosRepository;
 
     public List<Creditos> allCreditos(FilterDTO filter){
+        if(!(filter.getCliente() == null || filter.getMutual() == null) ){
+            return creditosRepository.findByClienteAndMutual(filter.getCliente(), filter.getMutual());
+        }
+        else if(filter.getCliente() != null){
+            return creditosRepository.findByClienteName(filter.getCliente());
+        }
+        else if(filter.getMutual() != null){
+            return creditosRepository.findByMutualName(filter.getMutual());
+        }
         return creditosRepository.findAll();
     }
 }
