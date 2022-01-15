@@ -1,0 +1,38 @@
+<div id="body">
+  <div id="background" (click)="setModalFilter()"></div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Filtro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="setModalFilter()">X</button>
+      </div>
+      <form [formGroup]="myForm" (ngSubmit)="queryCretitos()">
+        <div class="modal-body">
+          <div class="mb-3 d-flex">
+            <label for="exampleInputEmail1" class="form-label d-flex">Cliente:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Fabian"
+              formControlName="cliente"
+            />
+          </div>
+          <div class="mb-3 d-flex">
+            <label for="exampleInputEmail1" class="form-label d-flex">Mutual:</label>
+            <input
+              type="text"
+              formControlName="mutual"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Amoseba"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

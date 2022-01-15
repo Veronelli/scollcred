@@ -5,11 +5,11 @@ import { CreditosDetailComponent } from './detail/creditos-detail.component';
 import { CreditosUpdateComponent } from './update/creditos-update.component';
 import { CreditosDeleteDialogComponent } from './delete/creditos-delete-dialog.component';
 import { CreditosRoutingModule } from './route/creditos-routing.module';
-import { HeadTableComponent } from './head-table/head-table.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   imports: [SharedModule, CreditosRoutingModule],
-  declarations: [CreditosComponent, CreditosDetailComponent, CreditosUpdateComponent, CreditosDeleteDialogComponent, HeadTableComponent],
+  declarations: [CreditosComponent, CreditosDetailComponent, CreditosUpdateComponent, CreditosDeleteDialogComponent, ModalComponent],
   entryComponents: [CreditosDeleteDialogComponent],
 })
 export class CreditosModule {}

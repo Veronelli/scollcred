@@ -3,6 +3,10 @@
     <span>Creditos</span>
 
     <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="toggleModalFilter()" data-bs-target="#exampleModal">
+        Filtro
+      </button>
+
       <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh List</span>
@@ -33,8 +37,8 @@
       <thead>
         <tr>
           <th scope="col"><span>ID</span></th>
-          <th scope="col"><jhi-head-table columnName="Mutual"></jhi-head-table></th>
-          <th scope="col"><jhi-head-table columnName="Cliente"></jhi-head-table></th>
+          <th scope="col"><span>Mutual</span></th>
+          <th scope="col"><span>Cliente</span></th>
           <th scope="col"><span>Monto</span></th>
           <th scope="col"><span>Pago Cuota</span></th>
           <th scope="col"><span>Cantidad Cuotas</span></th>
@@ -97,3 +101,4 @@
     </table>
   </div>
 </div>
+<jhi-modal *ngIf="getModalFilter" (creditosFilter)="updateCreditos($event)"></jhi-modal>

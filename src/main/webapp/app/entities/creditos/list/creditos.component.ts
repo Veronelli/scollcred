@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ICreditos } from '../creditos.model';
+import { ICreditos, Creditos } from '../creditos.model';
 import { CreditosService } from '../service/creditos.service';
 import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.component';
 
@@ -48,5 +48,15 @@ export class CreditosComponent implements OnInit {
         this.loadAll();
       }
     });
+  }
+  get getModalFilter(): boolean {
+    return this.creditosService.getModalFilter;
+  }
+  toggleModalFilter(): void {
+    this.creditosService.setModalFilter(this.getModalFilter);
+  }
+
+  updateCreditos(newCreditos: ICreditos[]): void {
+    this.creditos = newCreditos;
   }
 }

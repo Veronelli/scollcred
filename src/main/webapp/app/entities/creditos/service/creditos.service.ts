@@ -16,8 +16,17 @@ export type EntityArrayResponseType = HttpResponse<ICreditos[]>;
 @Injectable({ providedIn: 'root' })
 export class CreditosService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/creditos');
+  private modalFilter = false;
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  get getModalFilter(): boolean {
+    return this.modalFilter;
+  }
+
+  setModalFilter(value: boolean): void {
+    this.modalFilter = !value;
+  }
 
   create(creditos: ICreditos): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(creditos);
