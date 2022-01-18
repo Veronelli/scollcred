@@ -107,7 +107,7 @@
               [ngValue]="mutualOption.id === editForm.get('mutual')!.value?.id ? editForm.get('mutual')!.value : mutualOption"
               *ngFor="let mutualOption of mutualsSharedCollection; trackBy: trackMutualById"
             >
-              {{ mutualOption.id }}
+              {{ mutualOption.nombre }}
             </option>
           </select>
         </div>
@@ -123,7 +123,7 @@
               [ngValue]="clienteOption.id === editForm.get('cliente')!.value?.id ? editForm.get('cliente')!.value : clienteOption"
               *ngFor="let clienteOption of clientesSharedCollection; trackBy: trackClienteById"
             >
-              {{ clienteOption.id }}
+              {{ clienteOption.nombre }} {{ clienteOption.apellido }}
             </option>
           </select>
         </div>

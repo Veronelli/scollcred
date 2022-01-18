@@ -3,7 +3,13 @@
     <span>Creditos</span>
 
     <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="toggleModalFilter()" data-bs-target="#exampleModal">
+      <button
+        type="button"
+        class="btn btn-primary mr-2"
+        data-bs-toggle="modal"
+        (click)="toggleModalFilter()"
+        data-bs-target="#exampleModal"
+      >
         Filtro
       </button>
 
@@ -59,7 +65,9 @@
           </td>
           <td>
             <div *ngIf="creditos.cliente">
-              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']">{{ creditos.cliente?.nombre }}</a>
+              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']"
+                >{{ creditos.cliente?.nombre }} {{ creditos.cliente?.apellido }}</a
+              >
             </div>
           </td>
           <td>{{ creditos.monto }}</td>
