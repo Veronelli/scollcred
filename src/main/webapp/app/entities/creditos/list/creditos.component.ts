@@ -21,8 +21,9 @@ export class CreditosComponent implements OnInit {
     this.isLoading = true;
 
     this.creditosService.query().subscribe(
-      (res: HttpResponse<ICreditos[]>) => {
+      res => {
         this.isLoading = false;
+        console.warn(res);
         this.creditos = res.body ?? [];
       },
       () => {

@@ -55,11 +55,17 @@ export class CreditosService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<any> {
     const options = createRequestOption(req);
-    return this.http
-      .get<ICreditos[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    // eslint-disable-next-line no-console
+    console.log('AAAAAA');
+    return this.http.get(this.resourceUrl, { params: options, observe: 'response' }).pipe(
+      map((res: any) => {
+        // eslint-disable-next-line no-console
+        console.log(res);
+        this.convertDateArrayFromServer(res);
+      })
+    );
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

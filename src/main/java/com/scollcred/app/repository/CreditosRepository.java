@@ -25,5 +25,6 @@ public interface CreditosRepository extends JpaRepository<Creditos, Long> {
     @Query(value="SELECT cred.* FROM CREDITOS AS cred LEFT JOIN CLIENTE AS clie  ON clie.ID = cred.ID LEFT JOIN MUTUAL AS mut ON clie.ID = mut.id WHERE clie.NOMBRE LIKE :cliente% AND mut.NOMBRE LIKE :mutual% LIMIT :limit OFFSET :page", nativeQuery = true)
     public List<Creditos> findAll(@Param("cliente") String cliente,@Param("mutual") String mutual,@Param("page") int page,@Param("limit")int limit);
 
-
+    @Query(value = "SELECT COUNT(*) FROM CREDITOS AS cred LEFT JOIN CLIENTE AS clie  ON clie.ID = cred.ID LEFT JOIN MUTUAL AS mut ON clie.ID = mut.id WHERE clie.NOMBRE LIKE :cliente% AND mut.NOMBRE LIKE :mutual%", nativeQuery = true)
+    public int findAndGetLength(@Param("cliente") String cliente,@Param("mutual") String mutual);
 }

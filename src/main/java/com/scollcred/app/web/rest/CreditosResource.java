@@ -3,8 +3,10 @@ package com.scollcred.app.web.rest;
 import com.scollcred.app.domain.Creditos;
 import com.scollcred.app.repository.CreditosRepository;
 import com.scollcred.app.service.CreditosService;
+import com.scollcred.app.service.dto.CreditosDTO;
 import com.scollcred.app.service.dto.FilterDTO;
 import com.scollcred.app.service.impl.CreditosServiceImpl;
+import com.scollcred.app.service.mapper.CreditosMapper;
 import com.scollcred.app.web.rest.errors.BadRequestAlertException;
 
 import java.awt.print.Pageable;
@@ -25,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
+import static com.scollcred.app.service.mapper.CreditosMapper.creditosToCreditosDTO;
 
 /**
  * REST controller for managing {@link com.scollcred.app.domain.Creditos}.
@@ -166,8 +170,12 @@ public class CreditosResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of creditos in body.
      */
     @GetMapping("/creditos")
-    public List<Creditos> getAllCreditos(@ModelAttribute("filter") FilterDTO filter) {
-        return creditosService.allCreditos(filter);
+    public CreditosDTO getAllCreditos(@ModelAttribute("filter") FilterDTO filter) {
+        CreditosMapper creditosMapper = null;
+        int creditosLength = creditosService.creditosLength(filter);
+        List<Creditos> creditos = creditosService.allCreditos(filter);
+        CreditosDTO creditosDTO = creditosToCreditosDTO(creditos,creditosLength);
+        return creditosDTO;
     }
 
     /**

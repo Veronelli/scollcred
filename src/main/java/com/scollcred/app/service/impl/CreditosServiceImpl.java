@@ -39,11 +39,21 @@ public class CreditosServiceImpl implements CreditosService {
         return findAll();
     }
 
+    public int creditosLength(FilterDTO filterDTO){
+        filterDTO.setCliente("");
+        filterDTO.setMutual("");
+        return findAndGetLength(filterDTO);
+    }
+
     private List<Creditos> findAll(){
         return findAll(new FilterDTO());
     }
     private List<Creditos> findAll(FilterDTO filter){
         filter.setPage(filter.getPage()*filter.getLimit());
         return creditosRepository.findAll(filter.getCliente(), filter.getMutual(), filter.getPage(),filter.getLimit());
+    }
+
+    private int findAndGetLength(FilterDTO filter){
+      return creditosRepository.findAndGetLength(filter.getCliente(), filter.getMutual());
     }
 }
