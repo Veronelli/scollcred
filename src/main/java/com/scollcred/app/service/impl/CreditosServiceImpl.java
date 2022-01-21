@@ -7,6 +7,9 @@ import com.scollcred.app.service.dto.FilterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,15 +33,17 @@ public class CreditosServiceImpl implements CreditosService {
     private CreditosRepository creditosRepository;
 
     public List<Creditos> allCreditos(FilterDTO filter){
-        if(!(filter.getCliente() == null || filter.getMutual() == null) ){
-            return creditosRepository.findByClienteAndMutual(filter.getCliente(), filter.getMutual());
+        if(!(filter.getCliente() == null && filter.getMutual() == null) ){
+            return findAll(filter);
         }
-        else if(filter.getCliente() != null){
-            return creditosRepository.findByClienteName(filter.getCliente());
-        }
-        else if(filter.getMutual() != null){
-            return creditosRepository.findByMutualName(filter.getMutual());
-        }
-        return creditosRepository.findAll();
+        return findAll();
+    }
+
+    private List<Creditos> findAll(){
+        return findAll(new FilterDTO());
+    }
+    private List<Creditos> findAll(FilterDTO filter){
+        filter.setPage(filter.getPage()*filter.getLimit());
+        return creditosRepository.findAll(filter.getCliente(), filter.getMutual(), filter.getPage(),filter.getLimit());
     }
 }

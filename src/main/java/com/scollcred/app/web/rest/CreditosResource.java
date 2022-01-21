@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -166,14 +167,12 @@ public class CreditosResource {
      */
     @GetMapping("/creditos")
     public List<Creditos> getAllCreditos(@ModelAttribute("filter") FilterDTO filter) {
-        log.debug("REST request to get all Creditos");
         return creditosService.allCreditos(filter);
     }
 
     /**
      * {@code GET  /creditos/:id} : get the "id" creditos.
      *
-     * @param id the id of the creditos to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the creditos, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/creditos/{id}")
