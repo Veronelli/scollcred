@@ -1,8 +1,8 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ICreditos, Creditos } from '../creditos.model';
+import { ICreditos, CreditosDTO } from '../creditos.model';
 import { CreditosService } from '../service/creditos.service';
 import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.component';
 
@@ -12,7 +12,7 @@ import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.
   styleUrls: ['./creditos.component.css'],
 })
 export class CreditosComponent implements OnInit {
-  creditos?: ICreditos[];
+  creditos?: CreditosDTO;
   isLoading = false;
 
   constructor(protected creditosService: CreditosService, protected modalService: NgbModal) {}
@@ -21,10 +21,12 @@ export class CreditosComponent implements OnInit {
     this.isLoading = true;
 
     this.creditosService.query().subscribe(
-      res => {
+      (res: HttpResponse<CreditosDTO>) => {
         this.isLoading = false;
-        console.warn(res);
-        this.creditos = res.body ?? [];
+        // eslint-disable-next-line no-console
+        console.log('dasdsada', res.body);
+        this.creditos = res.body ?? undefined;
+        this.isLoading = false;
       },
       () => {
         this.isLoading = false;
@@ -57,7 +59,7 @@ export class CreditosComponent implements OnInit {
     this.creditosService.setModalFilter(this.getModalFilter);
   }
 
-  updateCreditos(newCreditos: ICreditos[]): void {
+  updateCreditos(newCreditos: CreditosDTO): void {
     this.creditos = newCreditos;
   }
 }

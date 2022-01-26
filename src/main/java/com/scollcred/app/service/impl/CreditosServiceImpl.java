@@ -40,8 +40,6 @@ public class CreditosServiceImpl implements CreditosService {
     }
 
     public int creditosLength(FilterDTO filterDTO){
-        filterDTO.setCliente("");
-        filterDTO.setMutual("");
         return findAndGetLength(filterDTO);
     }
 

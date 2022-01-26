@@ -1,0 +1,12 @@
+.length{
+    align-items: center;
+    margin: 0px;
+    display: flex;
+    height: 40px;
+    margin-right: 10px;
+}
+.length>p{
+    font-size: 16px;
+    font-weight: bolder;
+    margin: 0px;
+}

@@ -8,9 +8,10 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { ICreditos, getCreditosIdentifier } from '../creditos.model';
+import { ICreditos, getCreditosIdentifier, CreditosDTO } from '../creditos.model';
 
 export type EntityResponseType = HttpResponse<ICreditos>;
+export type DTOEntityResponseType = HttpResponse<CreditosDTO>;
 export type EntityArrayResponseType = HttpResponse<ICreditos[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -55,17 +56,9 @@ export class CreditosService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  query(req?: any): Observable<any> {
+  query(req?: any): Observable<DTOEntityResponseType> {
     const options = createRequestOption(req);
-    // eslint-disable-next-line no-console
-    console.log('AAAAAA');
-    return this.http.get(this.resourceUrl, { params: options, observe: 'response' }).pipe(
-      map((res: any) => {
-        // eslint-disable-next-line no-console
-        console.log(res);
-        this.convertDateArrayFromServer(res);
-      })
-    );
+    return this.http.get<CreditosDTO>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

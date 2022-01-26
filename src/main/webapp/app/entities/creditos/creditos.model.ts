@@ -12,6 +12,10 @@ export interface ICreditos {
   mutual?: IMutual;
   cliente?: ICliente | null;
 }
+export interface CreditosDTO {
+  credtios: ICreditos[];
+  length: number;
+}
 
 export class Creditos implements ICreditos {
   constructor(

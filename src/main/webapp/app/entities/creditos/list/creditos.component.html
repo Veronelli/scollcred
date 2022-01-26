@@ -3,6 +3,9 @@
     <span>Creditos</span>
 
     <div class="d-flex justify-content-end">
+      <div class="length">
+        <p>Creditos encontrados: {{ creditos?.length }}</p>
+      </div>
       <button
         type="button"
         class="btn btn-primary mr-2"
@@ -54,33 +57,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let creditos of creditos; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let credito of creditos.credtios" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/creditos', creditos.id, 'view']">{{ creditos.id }} </a>
+            <a [routerLink]="['/creditos', credito.id, 'view']">{{ credito.id }} </a>
           </td>
           <td>
-            <div *ngIf="creditos.mutual">
-              <a [routerLink]="['/mutual', creditos.mutual?.id, 'view']">{{ creditos.mutual?.nombre }}</a>
+            <div *ngIf="credito.mutual">
+              <a [routerLink]="['/mutual', credito.mutual?.id, 'view']">{{ credito.mutual.nombre }}</a>
             </div>
           </td>
           <td>
-            <div *ngIf="creditos.cliente">
-              <a [routerLink]="['/cliente', creditos.cliente?.id, 'view']"
-                >{{ creditos.cliente?.nombre }} {{ creditos.cliente?.apellido }}</a
-              >
+            <div *ngIf="credito.cliente">
+              <a [routerLink]="['/cliente', credito.cliente?.id, 'view']">{{ credito.cliente?.nombre }} {{ credito.cliente?.apellido }}</a>
             </div>
           </td>
-          <td>{{ creditos.monto }}</td>
-          <td>{{ creditos.pagoCuota }}</td>
-          <td>{{ creditos.cantidadCuotas }}</td>
-          <td>{{ creditos.tomado | formatMediumDate }}</td>
-          <td>{{ creditos.inicioPago | formatMediumDate }}</td>
+          <td>{{ credito.monto }}</td>
+          <td>{{ credito.pagoCuota }}</td>
+          <td>{{ credito.cantidadCuotas }}</td>
+          <td>{{ credito.tomado }}</td>
+          <td>{{ credito.inicioPago }}</td>
 
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/creditos', creditos.id, 'view']"
+                [routerLink]="['/creditos', credito.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -90,7 +91,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/creditos', creditos.id, 'edit']"
+                [routerLink]="['/creditos', credito.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -98,7 +99,7 @@
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(creditos)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(credito)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>

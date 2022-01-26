@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CreditosService } from '../service/creditos.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
-import { ICreditos } from '../creditos.model';
+import { CreditosDTO } from '../creditos.model';
 
 @Component({
   selector: 'jhi-modal',
@@ -15,7 +15,7 @@ export class ModalComponent {
     mutual: [],
   });
 
-  @Output() creditosFilter = new EventEmitter<ICreditos[]>();
+  @Output() creditosFilter = new EventEmitter<CreditosDTO>();
 
   constructor(private creditosServicio: CreditosService, private fb: FormBuilder) {
     this.myForm.controls['cliente'].setValue('');
@@ -34,9 +34,9 @@ export class ModalComponent {
     // eslint-disable-next-line no-console
     console.log(this.myForm.value);
 
-    this.creditosServicio.query({ ...this.myForm.value }).subscribe((res: HttpResponse<ICreditos[]>) => {
+    this.creditosServicio.query({ ...this.myForm.value }).subscribe((res: HttpResponse<CreditosDTO>) => {
       // eslint-disable-next-line no-console
-      console.log(res.body);
+      console.log('Modal:', res.body);
 
       this.creditosFilter.emit(res.body!);
     });
