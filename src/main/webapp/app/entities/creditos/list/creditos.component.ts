@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ICreditos, CreditosDTO } from '../creditos.model';
 import { CreditosService } from '../service/creditos.service';
 import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-creditos',
@@ -14,18 +15,26 @@ import { CreditosDeleteDialogComponent } from '../delete/creditos-delete-dialog.
 export class CreditosComponent implements OnInit {
   creditos?: CreditosDTO;
   isLoading = false;
+  numPages!: Array<number>;
+  numPage = 0;
+  filter: any = {
+    cliente: '',
+    mutual: '',
+    page: 0,
+  };
 
   constructor(protected creditosService: CreditosService, protected modalService: NgbModal) {}
 
   loadAll(): void {
     this.isLoading = true;
 
-    this.creditosService.query().subscribe(
+    this.creditosService.query(this.filter).subscribe(
       (res: HttpResponse<CreditosDTO>) => {
         this.isLoading = false;
         // eslint-disable-next-line no-console
         console.log('dasdsada', res.body);
         this.creditos = res.body ?? undefined;
+        this.setNumberPages();
         this.isLoading = false;
       },
       () => {
@@ -52,14 +61,36 @@ export class CreditosComponent implements OnInit {
       }
     });
   }
+
   get getModalFilter(): boolean {
     return this.creditosService.getModalFilter;
   }
+
   toggleModalFilter(): void {
     this.creditosService.setModalFilter(this.getModalFilter);
   }
 
-  updateCreditos(newCreditos: CreditosDTO): void {
-    this.creditos = newCreditos;
+  updateCreditos(newCreditos: any): void {
+    // eslint-disable-next-line no-console
+    console.log('fdsfsfsdfdsfs', newCreditos);
+    this.creditos = { credtios: newCreditos.credtios, length: newCreditos.length };
+    this.filter = { ...newCreditos.filter };
+    this.setNumberPages();
+  }
+
+  setNumberPages(): void {
+    let num = Math.floor(this.creditos!.length / 10);
+    if (this.creditos!.length % 10 !== 0) {
+      num++;
+    }
+    this.numPages = Array(num);
+  }
+
+  nextPage(pageNum: number): void {
+    // eslint-disable-next-line no-console
+    console.log(this.filter);
+    this.filter.page = pageNum;
+    this.numPage = pageNum;
+    this.loadAll();
   }
 }

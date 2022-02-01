@@ -15,7 +15,7 @@ export class ModalComponent {
     mutual: [],
   });
 
-  @Output() creditosFilter = new EventEmitter<CreditosDTO>();
+  @Output() creditosFilter = new EventEmitter<any>();
 
   constructor(private creditosServicio: CreditosService, private fb: FormBuilder) {
     this.myForm.controls['cliente'].setValue('');
@@ -34,11 +34,12 @@ export class ModalComponent {
     // eslint-disable-next-line no-console
     console.log(this.myForm.value);
 
-    this.creditosServicio.query({ ...this.myForm.value }).subscribe((res: HttpResponse<CreditosDTO>) => {
-      // eslint-disable-next-line no-console
-      console.log('Modal:', res.body);
+    this.creditosServicio.query({ ...this.myForm.value }).subscribe((res: HttpResponse<any>) => {
+      res = { ...res.body, filter: this.myForm.value };
 
-      this.creditosFilter.emit(res.body!);
+      // eslint-disable-next-line no-console
+      console.log('Modal:', res);
+      this.creditosFilter.emit(res);
     });
   }
 }

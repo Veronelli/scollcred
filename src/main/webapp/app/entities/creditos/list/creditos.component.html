@@ -109,5 +109,17 @@
       </tbody>
     </table>
   </div>
+  <div class="card w-auto">
+    <div class="card-body d-flex justify-content-center">
+      <button
+        class="btn btn-primary m-1"
+        [ngClass]="{ 'bg-white': numPage === i, 'text-dark': numPage === i }"
+        *ngFor="let item of numPages; index as i"
+        (click)="nextPage(i)"
+      >
+        {{ i + 1 }}
+      </button>
+    </div>
+  </div>
 </div>
 <jhi-modal *ngIf="getModalFilter" (creditosFilter)="updateCreditos($event)"></jhi-modal>
